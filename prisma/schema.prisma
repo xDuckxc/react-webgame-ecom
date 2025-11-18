@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js" // แก้ไขเป็น prisma-client-js เพื่อให้ทำงานถูกต้อง
+  // output   = "../generated/prisma" // (Option) เปิดใช้บรรทัดนี้ถ้าต้องการเปลี่ยนที่เก็บไฟล์ Client
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// --- ENUMS ---
+enum Role {
+  USER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
+
+// --- MODELS ---
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  username  String?
+  role      Role     @default(USER)
+  
+  // เพิ่มฟิลด์นี้: ยอดเงิน (Default 0)
+  balance   Int      @default(0) 
+  
+  orders    Order[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id            String   @id @default(uuid())
+  title         String
+  description   String?  @db.Text
+  price         Int
+  originalPrice Int?
+  image         String?
+  category      String
+  rating        Float    @default(0)
+  isNew         Boolean  @default(false)
+  
+  // Relations
+  keys          ProductKey[]
+  orderItems    OrderItem[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model ProductKey {
+  id        String   @id @default(uuid())
+  code      String   @unique
+  isUsed    Boolean  @default(false)
+  
+  // Relations
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  
+  orderId   String?
+  order     Order?   @relation(fields: [orderId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  totalAmount Int
+  status      OrderStatus @default(PENDING)
+  
+  // Relations
+  userId      String      // ต้องเป็น String เหมือนกับ User.id
+  user        User        @relation(fields: [userId], references: [id])
+  
+  items       OrderItem[]
+  keys        ProductKey[]
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  quantity  Int
+  price     Int
+  
+  // Relations
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Game {
+  id                Int      @id @default(autoincrement())
+  title             String   @db.VarChar(255)
+  // เพิ่ม fields อื่นๆ ตามที่โค้ดของคุณต้องการ
+  release_date      DateTime?
+  // ถ้าคุณใช้ @map จะต้องตรงกับชื่อตารางที่คุณต้องการให้เป็น
+  // ตัวอย่าง: @@map("game_items")
+}
