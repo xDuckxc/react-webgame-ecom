@@ -6,6 +6,8 @@ First, run the development server:
 
 ```bash
 npm install requirment.txt
+npx prisma generate
+npx prisma db push
 npm run dev
 # or
 yarn dev
