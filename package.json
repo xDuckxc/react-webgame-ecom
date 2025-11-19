@@ -1,16 +1,39 @@
 {
+  "name": "react-webgame-ecom",
+  "version": "1.0.0",
+  "description": "Game E-commerce Web Application",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cd game-ecommerce && npm run dev",
+    "build": "cd game-ecommerce && npm run build",
+    "start": "cd game-ecommerce && npm run start",
+    "lint": "cd game-ecommerce && npm run lint",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "install-all": "npm install && cd game-ecommerce && npm install"
+  },
   "dependencies": {
     "@prisma/client": "^6.19.0",
     "bcryptjs": "^3.0.3",
-    "bootstrap": "^5.3.8",
-    "dom": "^0.0.3",
     "lucide-react": "^0.554.0",
-    "react": "^19.2.0",
-    "react-bootstrap": "^2.10.10",
-    "react-dom": "^19.2.0",
-    "react-router-dom": "^7.9.6"
+    "mysql2": "^3.6.5",
+    "prisma": "^6.19.0"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.6"
-  }
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0"
+  },
+  "keywords": [
+    "ecommerce",
+    "games",
+    "nextjs",
+    "prisma",
+    "mysql",
+    "typescript"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
 }

@@ -1,0 +1,92 @@
+# Game E-commerce Web Application Requirements
+
+## System Requirements
+- Node.js 18+ 
+- MySQL Database
+- npm/yarn package manager
+
+## Core Dependencies
+
+### Frontend Framework
+- Next.js 16.0.3 (React framework)
+- React 19.2.0
+- React DOM 19.2.0
+- TypeScript 5+
+
+### Styling & UI
+- Tailwind CSS 4
+- Lucide React (icons)
+
+### Database & ORM
+- Prisma Client 6.19.0
+- MySQL database connection
+
+### Authentication & Security
+- bcryptjs 3.0.3 (password hashing)
+
+### Development Tools
+- ESLint 9 (code linting)
+- ESLint Config Next 16.0.3
+- TypeScript definitions for Node, React, bcryptjs
+
+## Database Schema Requirements
+
+### User Management
+- User registration/login system
+- Role-based access (USER/ADMIN)
+- User balance tracking
+- Password encryption
+
+### Product Management
+- Game product catalog
+- Product categories
+- Pricing (original/discounted)
+- Product ratings
+- Image uploads
+- Product keys/codes system
+
+### Order Management
+- Shopping cart functionality
+- Order processing
+- Order status tracking (PENDING/PAID/CANCELLED)
+- Digital key delivery
+
+### Admin Panel
+- Product management (CRUD)
+- User management
+- Dashboard analytics
+- Order management
+
+## API Endpoints Required
+- /api/register - User registration
+- /api/login - User authentication
+- /api/products - Product CRUD operations
+- /api/users - User management
+- /api/games - Game data management
+- /api/dashboard - Admin analytics
+
+## Environment Configuration
+- DATABASE_URL for MySQL connection
+- Environment variables for sensitive data
+
+## File Upload Requirements
+- Product image uploads
+- File storage in /public/uploads/
+
+## Security Requirements
+- Password hashing with bcryptjs
+- Role-based route protection
+- Input validation
+- SQL injection prevention via Prisma
+
+## Performance Requirements
+- Server-side rendering with Next.js
+- Optimized images
+- Database query optimization
+- Responsive design
+
+## Deployment Requirements
+- Production build optimization
+- Environment variable configuration
+- Database migration support
+- Static asset optimization
