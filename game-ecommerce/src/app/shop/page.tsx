@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Search, SlidersHorizontal, AlertCircle } from 'lucide-react';
-import GameCard from '@/app/components/GameCard'; // Import จาก components
+import GameCard from '@/app/components/GameCard';
 
 // Type สำหรับข้อมูลเกมที่ดึงมาจาก API
 export interface GameProduct {
@@ -15,13 +15,12 @@ export interface GameProduct {
   isNew?: boolean;
 }
 
-const CATEGORIES = ['All', 'Action', 'RPG', 'Adventure', 'Strategy', 'Sport', 'Simulation'];
-
 export default function ShopPage() {
   // --- STATE MANAGEMENT ---
   const [games, setGames] = useState<GameProduct[]>([]); 
   const [isLoading, setIsLoading] = useState(true);      
   const [error, setError] = useState<string | null>(null); 
+  const [categories, setCategories] = useState<string[]>(['All']);
   
   // Filter State
   const [searchQuery, setSearchQuery] = useState('');
@@ -41,8 +40,18 @@ export default function ShopPage() {
           throw new Error(`Error: ${response.status}`);
         }
 
-        const data = await response.json();
-        setGames(data); 
+        const data: GameProduct[] = await response.json();
+        setGames(data);
+
+        // สร้างรายการหมวดหมู่จากข้อมูลจริงใน DB
+        const uniqueCategories = Array.from(
+          new Set(
+            data
+              .map((item) => item.category?.trim())
+              .filter((c): c is string => Boolean(c))
+          )
+        ).sort((a, b) => a.localeCompare(b));
+        setCategories(['All', ...uniqueCategories]); 
 
       } catch (err) {
         console.error("Failed to fetch games:", err);
@@ -97,7 +106,7 @@ export default function ShopPage() {
           <div className="bg-slate-900/80 p-2 rounded-lg border border-slate-800 backdrop-blur-sm sticky left-0 z-10">
              <SlidersHorizontal className="w-5 h-5 text-slate-400" />
           </div>
-          {CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}

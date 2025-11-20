@@ -73,21 +73,26 @@ export async function POST(request: Request) {
 // GET: ดึงสินค้าทั้งหมด พร้อมจำนวน Stock
 export async function GET() {
   try {
+    // ดึงสินค้า และดึงเฉพาะ keys ที่ยังไม่ถูกใช้ เพื่อนับ stock โดยไม่ส่ง code ออกไป
     const products = await prisma.product.findMany({
       include: {
-        _count: {
-          // ⭐ สำคัญ: นับเฉพาะ keys ที่ยังไม่ถูกใช้ (isUsed: false)
-          select: { keys: { where: { isUsed: false } } } 
-        }
+        keys: {
+          where: { isUsed: false },
+          select: { id: true }, // ไม่ส่ง code ออกไปเพื่อลดการรั่วไหล
+        },
       },
-      orderBy: {
-        createdAt: 'desc' // เรียงจากใหม่ไปเก่า
-      }
+      orderBy: { createdAt: "desc" },
     });
 
-    return NextResponse.json(products);
+    // แปลงผลลัพธ์ให้มีฟิลด์ _count.keys ตามที่ฝั่ง UI ใช้
+    const serialized = products.map(({ keys, ...rest }) => ({
+      ...rest,
+      _count: { keys: keys.length },
+    }));
+
+    return NextResponse.json(serialized);
   } catch (error) {
     console.error("Error fetching products:", error);
-    return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch products" }, { status: 500 });
   }
 }

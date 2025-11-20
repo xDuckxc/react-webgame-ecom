@@ -1,2 +1,26 @@
 node_modules
 # Keep environment variables out of version control
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Prisma artifacts / local DB / IDE
+/prisma/dev.db
+.DS_Store
+
+# CSV exports/imports from data pipeline
+/*.csv
+/game-ecommerce/src/app/*.csv
+
+# Next.js build outputs
+.next
+out
+build
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*

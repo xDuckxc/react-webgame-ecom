@@ -41,7 +41,7 @@ model User {
 model Product {
   id            String   @id @default(uuid())
   title         String
-  description   String?  @db.Text
+  description   String?
   price         Int
   originalPrice Int?
   image         String?
@@ -104,7 +104,7 @@ model OrderItem {
 
 model Game {
   id                Int      @id @default(autoincrement())
-  title             String   @db.VarChar(255)
+  title             String
   // เพิ่ม fields อื่นๆ ตามที่โค้ดของคุณต้องการ
   release_date      DateTime?
   // ถ้าคุณใช้ @map จะต้องตรงกับชื่อตารางที่คุณต้องการให้เป็น
