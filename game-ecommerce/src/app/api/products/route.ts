@@ -78,7 +78,7 @@ export async function GET() {
       include: {
         keys: {
           where: { isUsed: false },
-          select: { id: true }, // ไม่ส่ง code ออกไปเพื่อลดการรั่วไหล
+          select: { id: true } // ไม่ส่ง code ออกไปเพื่อลดการรั่วไหล
         },
       },
       orderBy: { createdAt: "desc" },

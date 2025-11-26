@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-// เช็ค path ให้ถูกต้องตามโครงสร้างโฟลเดอร์จริงของคุณ
-import Navbar from "@/app/components/navbar"; 
+
+// 1. Import Context และ Components ที่เราสร้างไว้
+import { CartProvider } from '@/context/CartContext';
+import Navbar from '@/app/components/navbar';        // ตรวจสอบ Path ว่าไฟล์อยู่ที่ components/Navbar หรือ app/components/navbar
+import CartSidebar from '@/app/components/CartSidebar';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +17,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// เก็บไว้แค่อันเดียว และแก้ไขข้อมูลให้ตรงกับเว็บ GameZone
 export const metadata: Metadata = {
   title: "GameZone",
   description: "E-commerce for Gamers",
@@ -28,15 +30,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-950`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-950 text-slate-100`}
       >
-        {/* 1. ใส่ Navbar ไว้ตรงนี้ เพื่อให้แสดงทุกหน้า */}
-        <Navbar />
-        
-        {/* 2. ใส่ Main Wrapper เพื่อคุมเนื้อหา */}
-        <main className="min-h-screen">
-          {children}
-        </main>
+        {/* 2. ครอบ CartProvider เป็นชั้นนอกสุด */}
+        <CartProvider>
+          
+          {/* Navbar อยู่ใน Provider เพื่อให้เข้าถึงจำนวนสินค้าในตะกร้าได้ */}
+          <Navbar />
+          
+          <main className="min-h-screen pt-4">
+            {children}
+          </main>
+
+          {/* ใส่ CartSidebar ไว้ตรงนี้ เพื่อให้มันลอยทับหน้าเว็บได้ทุกหน้า */}
+          <CartSidebar />
+          
+        </CartProvider>
       </body>
     </html>
   );
