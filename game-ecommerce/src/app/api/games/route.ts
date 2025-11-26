@@ -9,7 +9,7 @@ import { prisma } from '@/lib/prisma';
 export async function GET() {
   try {
     // Line 11: prisma.game.findMany now correctly uses the globally defined client.
-    const games = await prisma.game.findMany({ 
+    const games = await prisma.product.findMany({ 
       take: 6,
       // Example: orderBy: { release_date: 'desc' }
     });
