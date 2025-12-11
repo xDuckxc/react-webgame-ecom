@@ -30,6 +30,7 @@ model User {
   role      Role     @default(USER)
   balance   Int      @default(0) 
   orders    Order[]
+  topups    TopUp[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -87,4 +88,16 @@ model OrderItem {
   price        Float
   productId    String  
   product      Product @relation(fields: [productId], references: [id])
+}
+
+model TopUp {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  amount        Float
+  status        String   @default("PENDING")
+  qrImage       String?  @db.Text
+  transactionId String?  @unique
+  createdAt     DateTime @default(now())
+  expiresAt     DateTime?
 }

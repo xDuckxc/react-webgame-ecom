@@ -121,17 +121,17 @@ export default function Navbar() {
                 <div className="relative flex items-center gap-3">
                   
                   {/* ⭐ ปุ่มแจ้งเตือน (Bell) ⭐ */}
-                  <button 
+                  {/* <button 
                     onClick={handleNotificationClick}
                     className="relative p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-all group"
                     title="การแจ้งเตือน / คลังเกม"
                   >
                     <Bell className={`w-5 h-5 transition-colors ${hasNotification ? 'text-white animate-pulse' : 'group-hover:text-purple-400'}`} />
                     {/* จุดแดงแจ้งเตือน */}
-                    {hasNotification && (
+                    {/* {hasNotification && (
                       <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-slate-900"></span>
                     )}
-                  </button>
+                  </button> */} 
 
                   {/* Profile Dropdown Trigger */}
                   <button onClick={() => setIsProfileOpen(!isProfileOpen)} className="flex items-center space-x-2 bg-slate-800 hover:bg-slate-700 py-1.5 pl-1.5 pr-3 rounded-full transition-all border border-slate-700 hover:border-purple-500/50">
@@ -160,6 +160,10 @@ export default function Navbar() {
                             <Link href="/inventory" className="w-full text-left px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white flex items-center">
                               <Gamepad2 className="w-4 h-4 mr-2" />
                               คลังเกมของฉัน
+                            </Link>
+                            <Link href="/topup" className="w-full text-left px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white flex items-center">
+                              <Wallet className="w-4 h-4 mr-2" />
+                              เติมเงิน
                             </Link>
                         </div>
 
@@ -205,6 +209,69 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-slate-800 border-t border-slate-700">
+          <div className="px-2 pt-2 pb-3 space-y-1">
+            <Link href="/" className="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-700">
+              หน้าแรก
+            </Link>
+            <Link href="/shop" className="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-700">
+              ร้านค้า
+            </Link>
+            
+            {user ? (
+              <>
+                <div className="border-t border-slate-700 my-2"></div>
+                
+                <div className="px-3 py-2">
+                  <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-1">บัญชีของคุณ</p>
+                  <p className="text-sm font-bold text-white truncate">{user.email}</p>
+                  <div className="flex items-center text-green-400 font-bold mt-2">
+                    <Wallet className="w-4 h-4 mr-1.5" />
+                    ฿{user.balance.toLocaleString()}
+                  </div>
+                </div>
+
+                <div className="border-t border-slate-700 my-2"></div>
+
+                {user.role === 'ADMIN' && (
+                  <Link href="/admin" className="block px-3 py-2 rounded-md text-base font-medium text-purple-400 hover:text-purple-300 hover:bg-slate-700">
+                    <LayoutDashboard className="w-4 h-4 inline mr-2" />
+                    จัดการระบบหลังบ้าน
+                  </Link>
+                )}
+
+                <Link href="/inventory" className="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-700">
+                  <Gamepad2 className="w-4 h-4 inline mr-2" />
+                  คลังเกมของฉัน
+                </Link>
+
+                <Link href="/topup" className="block px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:text-white hover:bg-slate-700">
+                  <Wallet className="w-4 h-4 inline mr-2" />
+                  เติมเงิน
+                </Link>
+
+                <div className="border-t border-slate-700 my-2"></div>
+
+                <button onClick={handleLogout} className="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-red-400 hover:text-red-300 hover:bg-slate-700">
+                  <LogOut className="w-4 h-4 inline mr-2" />
+                  ออกจากระบบ
+                </button>
+              </>
+            ) : (
+              <>
+                <div className="border-t border-slate-700 my-2"></div>
+                <Link href="/login" className="block px-3 py-2 rounded-md text-base font-medium bg-purple-600 text-white hover:bg-purple-700 text-center">
+                  <User className="w-4 h-4 inline mr-2" />
+                  เข้าสู่ระบบ
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

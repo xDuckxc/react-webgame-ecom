@@ -58,7 +58,7 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Card: ยอดขายรวม */}
         <StatCard 
-          title="ยอดขายรวม (PAID)" 
+          title="ยอดขายรวม (COMPLETED)" 
           value={`฿${data.stats.totalRevenue.toLocaleString()}`} 
           icon={<DollarSign size={24} className="text-green-400" />}
           bgClass="bg-green-900/10 border-green-900/30"
@@ -158,8 +158,8 @@ function StatCard({ title, value, icon, bgClass }: { title: string, value: strin
 }
 
 function StatusBadge({ status }: { status: string }) {
-  if (status === 'PAID') {
-    return <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-900/30 text-green-400 border border-green-800"><CheckCircle size={12}/> PAID</span>;
+  if (status === 'COMPLETED' || status === 'PAID') {
+    return <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-900/30 text-green-400 border border-green-800"><CheckCircle size={12}/> COMPLETED</span>;
   }
   if (status === 'PENDING') {
     return <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-900/30 text-yellow-400 border border-yellow-800"><Clock size={12}/> PENDING</span>;

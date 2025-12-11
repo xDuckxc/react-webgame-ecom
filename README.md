@@ -1,181 +1,172 @@
-# Game E-commerce Web Application
+# ระบบร้านค้าเกมออนไลน์ (Game E-commerce)
 
-A modern e-commerce platform for digital games built with Next.js 16, React 19, and Prisma ORM. Features user authentication, admin dashboard, product management, and digital key delivery system.
+แพลตฟอร์มอีคอมเมิร์ซสำหรับจำหน่ายเกมดิจิทัล พัฒนาด้วย Next.js 16, React 19 และ Prisma ORM พร้อมระบบยืนยันตัวตน, แดชบอร์ดแอดมิน, การจัดการสินค้า และระบบส่งมอบ Key เกมอัตโนมัติ
 
-## 🚀 Features
+## 🚀 ฟีเจอร์หลัก
 
-- **User Authentication** - Secure login/register with bcryptjs encryption
-- **Role-based Access Control** - USER and ADMIN roles with different permissions
-- **Product Catalog** - Browse games by categories with ratings and pricing
-- **Admin Dashboard** - Comprehensive admin panel for managing products and users
-- **Digital Key System** - Automated delivery of game keys upon purchase
-- **Responsive Design** - Mobile-first design with Tailwind CSS 4
-- **Database Management** - MySQL database with Prisma ORM
+- **ระบบยืนยันตัวตน** - เข้าสู่ระบบ/สมัครสมาชิกที่ปลอดภัยด้วย bcryptjs
+- **ระบบจัดการสิทธิ์** - แบ่งบทบาทเป็น USER และ ADMIN
+- **แคตตาล็อกสินค้า** - เรียกดูเกมตามหมวดหมู่ พร้อมคะแนนและราคา
+- **แดชบอร์ดแอดมิน** - จัดการสินค้าและผู้ใช้งานแบบครบวงจร
+- **ระบบ Key เกมดิจิทัล** - ส่งมอบ Key เกมอัตโนมัติเมื่อซื้อสำเร็จ
+- **ระบบเติมเงิน** - เติมเงินผ่าน QR Code (SCB PromptPay)
+- **Mobile Menu** - เมนูสำหรับมือถือ (Burger Menu)
+- **ฐานข้อมูล** - MySQL พร้อม Prisma ORM
 
-## 🛠 Tech Stack
+## 🛠 เทคโนโลยีที่ใช้
 
 - **Frontend**: Next.js 16, React 19, TypeScript
 - **Styling**: Tailwind CSS 4
 - **Database**: MySQL with Prisma ORM
 - **Authentication**: Custom JWT with bcryptjs
+- **Payment**: SCB Developer API (QR Payment)
 - **Icons**: Lucide React
 - **Development**: ESLint, TypeScript
 
-## 📋 Prerequisites
+## 📋 ความต้องการของระบบ
 
-- Node.js 18.0.0 or higher
-- npm or yarn package manager
+- Node.js 18.0.0 หรือสูงกว่า
+- npm หรือ yarn
+- MySQL 8.0 หรือสูงกว่า
 
-## 🔧 Installation
+## 🔧 การติดตั้ง
 
-### 1. Clone and Install Dependencies
+### 1. Clone และติดตั้ง Dependencies
 
 ```bash
-# Install root dependencies
+# ติดตั้ง dependencies หลัก
 npm install
 
-# Install Next.js app dependencies  
+# ติดตั้ง dependencies ของ Next.js app
 npm run install-all
 ```
 
-### 2. Environment Setup
+### 2. ตั้งค่า Environment Variables
 
-Create a `.env` file in the root directory:
+สร้างไฟล์ `.env` ในโฟลเดอร์หลัก:
 
 ```env
 DATABASE_URL="mysql://root:@127.0.0.1:3306/game_ecom"
 NEXTAUTH_SECRET="your-secret-key-here"
 NEXTAUTH_URL="http://localhost:3000"
+
+# SCB Developer API (สำหรับ QR Payment)
+SCB_API_KEY="your_scb_api_key"
+SCB_BILLER_ID="your_biller_id"
 ```
 
-### 3. Database Setup
+### 3. ตั้งค่าฐานข้อมูล
 
 ```bash
-# Generate Prisma client (ใช้ตัวแปรรันคู่)
+# Generate Prisma Client
 DATABASE_URL="mysql://root:@127.0.0.1:3306/game_ecom" npm run db:generate
 
-# Push schema (dev) หรือ migrate (prod)
+# Push schema ไปยังฐานข้อมูล
 DATABASE_URL="mysql://root:@127.0.0.1:3306/game_ecom" npm run db:push
-# DATABASE_URL="mysql://root:@127.0.0.1:3306/game_ecom" npm run db:migrate
 ```
 
-### 4. Start Development Server
+### 4. เริ่มต้น Development Server
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the application.
+เปิดเบราว์เซอร์ที่ [http://localhost:3000](http://localhost:3000)
 
-### 5. (Optional) เติมข้อมูลสินค้าอัตโนมัติจาก FreeToGame API
+### 5. (ทางเลือก) เติมข้อมูลสินค้าอัตโนมัติ
 
 ```bash
 pip install "sqlalchemy>=2" "pymysql>=1" requests
 python3 game-ecommerce/src/app/api.py --fetch --import-db --csv-dir . --db-url "mysql+pymysql://root:@127.0.0.1:3306/game_ecom"
 ```
-- ดึงเกมจาก API แตกไฟล์ CSV ตามหมวดหมู่
-- นำเข้าข้อมูลสินค้า (รวมรูป `thumbnail`) ลงฐาน MySQL อัตโนมัติ  
-  > ถ้าไม่ต้องการส่งรูปไป git ให้ลบไฟล์ CSV ออกจาก repo หรือเพิ่ม `.gitignore`
 
-## 📁 Project Structure
+## 📁 โครงสร้างโปรเจกต์
 
 ```
 react-webgame-ecom/
 ├── game-ecommerce/              # Next.js application
 │   ├── src/
 │   │   └── app/
-│   │       ├── admin/           # Admin dashboard pages
+│   │       ├── admin/           # หน้าแอดมิน
 │   │       ├── api/             # API routes
+│   │       │   ├── topup/       # API เติมเงิน
+│   │       │   ├── checkout/    # API ชำระเงิน
+│   │       │   └── dashboard/   # API แดชบอร์ด
 │   │       ├── components/      # React components
-│   │       ├── login/           # Authentication pages
-│   │       ├── register/        # User registration
-│   │       ├── shop/            # Product catalog
-│   │       ├── layout.tsx       # Root layout
-│   │       ├── page.tsx         # Home page
-│   │       └── globals.css      # Global styles
-│   ├── public/                  # Static assets
-│   └── package.json             # Next.js dependencies
+│   │       ├── login/           # หน้าเข้าสู่ระบบ
+│   │       ├── register/        # หน้าสมัครสมาชิก
+│   │       ├── shop/            # หน้าร้านค้า
+│   │       ├── topup/           # หน้าเติมเงิน
+│   │       ├── inventory/       # คลังเกม
+│   │       └── layout.tsx       # Root layout
+│   └── public/                  # Static assets
 ├── prisma/                      # Database configuration
 │   ├── schema.prisma            # Database schema
-│   ├── migrations/              # Database migrations
-│   └── dev.db                   # SQLite database file
-├── generated/                   # Generated Prisma client
-├── .env                         # Environment variables
-├── package.json                 # Root dependencies
-├── SETUP.md                     # Detailed setup guide
-└── TECHNICAL_REQUIREMENTS.md    # Technical specifications
+│   └── migrations/              # Database migrations
+└── README.md                    # เอกสารนี้
 ```
 
-## 🎮 Available Scripts
+## 🎮 คำสั่งที่ใช้บ่อย
 
-### Root Level Commands
 ```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
+npm run dev          # เริ่ม development server
+npm run build        # Build สำหรับ production
+npm run start        # เริ่ม production server
+npm run lint         # รัน ESLint
 npm run db:generate  # Generate Prisma client
-npm run db:push      # Push schema to database
-npm run db:migrate   # Run database migrations
-npm run db:studio    # Open Prisma Studio
-npm run install-all  # Install all dependencies
+npm run db:push      # Push schema ไปยังฐานข้อมูล
+npm run db:studio    # เปิด Prisma Studio
 ```
 
-## 🔐 Default Admin Access
+## 🔐 บัญชีแอดมินเริ่มต้น
 
-To create an admin user, you can:
+สร้างบัญชีแอดมินได้ 2 วิธี:
 
-1. Register a normal user through the UI
-2. Use Prisma Studio to change the role to ADMIN:
+1. สมัครสมาชิกผ่าน UI แล้วเปลี่ยน role เป็น ADMIN ใน Prisma Studio
+2. ใช้ Prisma Studio เพื่อสร้างผู้ใช้ใหม่:
    ```bash
    npm run db:studio
    ```
-3. Or manually insert an admin user into the database
 
-## 🎯 Key Features Breakdown
+## 💰 ระบบเติมเงิน (Top-Up System)
 
-### User Management
-- Secure user registration and authentication
-- Password encryption with bcryptjs
-- Role-based access control (USER/ADMIN)
-- User balance management for purchases
+### วิธีใช้งาน:
 
-### Product Management
-- Complete CRUD operations for game products
-- Category-based organization
-- Rating system and pricing management
-- Image upload and management
-- Digital key inventory system
+1. เข้าสู่ระบบ
+2. คลิก Profile → เติมเงิน
+3. ระบุจำนวนเงิน
+4. กด "สร้าง QR Code"
+5. สแกน QR ด้วยแอพธนาคาร (SCB Easy)
+6. ชำระเงิน
+7. ระบบตรวจสอบอัตโนมัติและเติมเงินให้
 
-### Admin Dashboard
-- User management interface
-- Product catalog management
-- Order tracking and management
-- System analytics and reporting
+### ฟีเจอร์:
 
-### E-commerce Features
-- Shopping cart functionality
-- Order processing system
-- Digital key delivery
-- Purchase history tracking
+- ✅ QR Payment ผ่าน SCB PromptPay
+- ✅ Mock QR สำหรับทดสอบ (ถ้า SCB API ไม่พร้อม)
+- ✅ Countdown timer 15 นาที
+- ✅ Auto-check สถานะทุก 3 วินาที
+- ✅ ปุ่มทดสอบชำระเงิน (Mock Mode)
 
 ## 🌐 API Endpoints
 
 ### Authentication
-- `POST /api/register` - User registration
-- `POST /api/login` - User authentication
+- `POST /api/register` - สมัครสมาชิก
+- `POST /api/login` - เข้าสู่ระบบ
 
 ### Products
-- `GET /api/products` - List all products
-- `POST /api/products` - Create product (Admin only)
+- `GET /api/products` - ดึงรายการสินค้าทั้งหมด
+- `POST /api/products` - เพิ่มสินค้า (Admin เท่านั้น)
 
-### Users
-- `GET /api/users` - List users (Admin only)
+### Top-Up
+- `POST /api/topup/qr` - สร้าง QR Code
+- `POST /api/topup/webhook` - Webhook จาก SCB
+- `GET /api/topup/status/[topupId]` - เช็คสถานะ
 
 ### Dashboard
-- `GET /api/dashboard` - Admin dashboard data
+- `GET /api/dashboard` - ข้อมูลแดชบอร์ดแอดมิน
 
-## 🚀 Deployment
+## 🚀 การ Deploy
 
 ### Production Build
 ```bash
@@ -183,52 +174,54 @@ npm run build
 npm run start
 ```
 
-### Environment Variables for Production
+### Environment Variables สำหรับ Production
 ```env
 DATABASE_URL="your-production-database-url"
 NEXTAUTH_SECRET="your-production-secret"
 NEXTAUTH_URL="https://yourdomain.com"
 NODE_ENV="production"
+SCB_API_KEY="production_api_key"
+SCB_BILLER_ID="production_biller_id"
 ```
 
-## 📚 Documentation
+## 🆘 แก้ปัญหา
 
-- [SETUP.md](./SETUP.md) - Detailed setup instructions
-- [TECHNICAL_REQUIREMENTS.md](./TECHNICAL_REQUIREMENTS.md) - Technical specifications
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Prisma Documentation](https://www.prisma.io/docs)
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run tests and linting
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 🆘 Troubleshooting
-
-### Common Issues
-
-**Database Connection Issues**
+### ปัญหาการเชื่อมต่อฐานข้อมูล
 ```bash
 # Reset database
 rm prisma/dev.db
 npm run db:push
 ```
 
-**Prisma Client Issues**
+### ปัญหา Prisma Client
 ```bash
-# Regenerate Prisma client
+# Generate Prisma client ใหม่
 npm run db:generate
 ```
 
-**Port Already in Use**
-- Next.js will automatically use the next available port
-- Or specify a different port: `npm run dev -- -p 3001`
+### Port ถูกใช้งานอยู่
+```bash
+# Next.js จะใช้ port ถัดไปอัตโนมัติ
+# หรือระบุ port เอง
+npm run dev -- -p 3001
+```
 
-For more detailed troubleshooting, see [SETUP.md](./SETUP.md).
+## 📝 หมายเหตุ
+
+- ระบบเติมเงินใช้ SCB Sandbox สำหรับทดสอบ
+- สำหรับ Production ต้องใช้ API Key และ Biller ID จริง
+- ต้องตั้งค่า Webhook URL ใน SCB Developer Portal
+- ใช้ ngrok สำหรับทดสอบ Webhook ใน Development
+
+## 📄 License
+
+MIT License
+
+## 👨‍💻 ผู้พัฒนา
+
+พัฒนาโดย [Your Name]
+
+---
+
+**เวอร์ชัน:** 2.0  
+**อัปเดตล่าสุด:** 11 ธันวาคม 2568

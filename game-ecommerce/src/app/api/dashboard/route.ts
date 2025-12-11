@@ -3,29 +3,20 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
-    // 1. ดึงข้อมูลสรุป (ทำพร้อมกันด้วย Promise.all เพื่อความเร็ว)
     const [userCount, productCount, orderCount, revenueAggregate, recentOrders] = await Promise.all([
-      // นับ User ทั้งหมด
       prisma.user.count(),
-      
-      // นับสินค้าทั้งหมด
       prisma.product.count(),
-      
-      // นับออเดอร์ทั้งหมด
-      prisma.order.count(),
-      
-      // รวมยอดเงิน (เฉพาะสถานะ PAID)
+      prisma.order.count({ where: { status: 'COMPLETED' } }),
       prisma.order.aggregate({
         _sum: { totalAmount: true },
-        where: { status: 'PAID' }
+        where: { status: 'COMPLETED' }
       }),
-
-      // ดึง 5 ออเดอร์ล่าสุด
       prisma.order.findMany({
         take: 5,
         orderBy: { createdAt: 'desc' },
+        where: { status: 'COMPLETED' },
         include: {
-          user: { select: { username: true, email: true } } // Join ตาราง User มาเอาชื่อ
+          user: { select: { username: true, email: true } }
         }
       })
     ]);
@@ -35,7 +26,7 @@ export async function GET() {
         totalUsers: userCount,
         totalProducts: productCount,
         totalOrders: orderCount,
-        totalRevenue: revenueAggregate._sum.totalAmount || 0, // ถ้าไม่มีออเดอร์เลยให้เป็น 0
+        totalRevenue: revenueAggregate._sum.totalAmount || 0,
       },
       recentOrders
     });
